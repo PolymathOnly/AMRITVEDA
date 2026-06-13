@@ -1,0 +1,3040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AMRITVEDA — An Earnest Pantry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #efe6d2;
+    --bg-deeper: #e7dcc3;
+    --bg-card: #f5ecd8;
+    --ink: #2a1a0f;
+    --ink-soft: #5a4632;
+    --ink-faded: #8a7558;
+    --rule: #c9b894;
+    --saffron: #c2671d;
+    --terracotta: #a8421c;
+    --olive: #6b7341;
+    --wine: #5e2536;
+    --gold: #b88a3a;
+    --cream: #f5ecd8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* paper grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.15 0 0 0 0 0.08 0 0 0 0 0.02 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 100;
+    mix-blend-mode: multiply;
+  }
+
+  .serif { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144, 'SOFT' 50; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ---------- announcement strip ---------- */
+  .strip {
+    background: var(--ink);
+    color: var(--bg);
+    text-align: center;
+    padding: 9px 24px;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    overflow: hidden;
+  }
+  .strip span { display: inline-block; animation: drift 28s linear infinite; white-space: nowrap; }
+  .strip span::after { content: '  ◆  Free dispatch above ₹1499  ◆  Catalogue No. 04, Vol. ii  ◆  Sourced from Kashmir to Karnataka  ◆  Free dispatch above ₹1499  ◆  Catalogue No. 04, Vol. ii  ◆  Sourced from Kashmir to Karnataka'; }
+  @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ---------- nav ---------- */
+  nav.top {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+    padding: 18px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 600, 'SOFT' 30, 'WONK' 1;
+    font-size: 26px;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .logo small {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faded);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .nav-links a {
+    color: var(--ink);
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 2px;
+    transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--saffron);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--saffron); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faded);
+    letter-spacing: 0.1em;
+  }
+
+  /* ---------- hero banner ---------- */
+  .hero-banner {
+    position: relative;
+    height: 92vh;
+    min-height: 560px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* slides */
+  .banner-slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 7vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0s;
+  }
+  .banner-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1);
+  }
+  .banner-slide.exit {
+    opacity: 0;
+    transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* per-slide backgrounds */
+  .bs-nuts    { background: linear-gradient(120deg, #ede3cc 0%, #e0d0b0 100%); }
+  .bs-seeds   { background: linear-gradient(120deg, #e8e2cf 0%, #d9cfb0 100%); }
+  .bs-ghee    { background: linear-gradient(120deg, #f0e4c0 0%, #e8d090 100%); }
+  .bs-saamaan { background: linear-gradient(120deg, #2a1a0f 0%, #1a0f06 100%); color: var(--bg); }
+  .bs-gifting { background: linear-gradient(120deg, #5e2536 0%, #3a1220 100%); color: var(--bg); }
+
+  .slide-content {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 8vw;
+    align-items: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .slide-text { position: relative; }
+
+  .slide-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .slide-num::before { content:''; width: 28px; height: 1px; background: currentColor; display: inline-block; }
+
+  .slide-h1 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 70;
+    font-size: clamp(48px, 8vw, 110px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    margin-bottom: 28px;
+  }
+  .slide-h1 em {
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'SOFT' 100, 'WONK' 1;
+  }
+  .bs-nuts .slide-h1 em,
+  .bs-seeds .slide-h1 em { color: var(--saffron); }
+  .bs-ghee .slide-h1 em  { color: var(--terracotta); }
+  .bs-saamaan .slide-h1 em { color: var(--gold); }
+  .bs-gifting .slide-h1 em { color: #f0a080; }
+
+  .slide-body {
+    font-size: 16px;
+    line-height: 1.65;
+    max-width: 400px;
+    opacity: 0.7;
+    margin-bottom: 36px;
+  }
+
+  .slide-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 28px;
+    border-radius: 40px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: 'Manrope', sans-serif;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .bs-nuts .slide-cta,
+  .bs-seeds .slide-cta,
+  .bs-ghee .slide-cta   { background: var(--ink); color: var(--bg); }
+  .bs-saamaan .slide-cta { background: var(--gold); color: var(--ink); }
+  .bs-gifting .slide-cta { background: #f0a080; color: var(--ink); }
+  .slide-cta:hover { transform: translateY(-2px); opacity: 0.85; }
+  .slide-cta .arr { transition: transform 0.3s; }
+  .slide-cta:hover .arr { transform: translateX(4px); }
+
+  /* right visual panel */
+  .slide-vis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    position: relative;
+  }
+
+  /* progress dots + bar */
+  .banner-controls {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .b-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--ink-faded);
+    cursor: pointer;
+    transition: all 0.4s;
+    border: none;
+    padding: 0;
+    opacity: 0.35;
+  }
+  .b-dot.on { width: 28px; border-radius: 4px; opacity: 1; background: var(--saffron); }
+  .bs-saamaan ~ .banner-controls .b-dot,
+  .bs-gifting ~ .banner-controls .b-dot { background: var(--bg); }
+
+  .banner-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--saffron);
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* slide count badge */
+  .slide-count {
+    position: absolute;
+    top: 40px;
+    right: 7vw;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    opacity: 0.4;
+  }
+
+  .browse-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 26px;
+    background: var(--ink);
+    color: var(--bg);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-radius: 40px;
+    transition: all 0.3s;
+  }
+  .browse-btn:hover { background: var(--saffron); transform: translateY(-2px); }
+  .browse-btn .arrow { transition: transform 0.3s; }
+  .browse-btn:hover .arrow { transform: translateX(4px); }
+
+  /* ---------- categories nav ---------- */
+  .cat-strip {
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+    position: relative;
+  }
+  .cat-strip-inner {
+    display: flex;
+    gap: 0;
+    animation: ticker 60s linear infinite;
+    white-space: nowrap;
+    padding: 22px 0;
+  }
+  .cat-strip-inner span {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 400;
+    font-style: italic;
+    font-size: 38px;
+    color: var(--ink);
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .cat-strip-inner span::after {
+    content: '✦';
+    color: var(--saffron);
+    font-style: normal;
+    font-size: 16px;
+  }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ---------- section heading ---------- */
+  .section {
+    padding: 90px 36px;
+    border-bottom: 1px solid var(--rule);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 60px;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faded);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--saffron);
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 60;
+    font-size: clamp(40px, 6vw, 76px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    flex: 1 1 500px;
+  }
+  .section-title em {
+    font-style: italic;
+    color: var(--terracotta);
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'WONK' 1;
+  }
+  .section-aside {
+    max-width: 320px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    padding-bottom: 8px;
+  }
+
+  /* ---------- catalogue rows ---------- */
+  .cat-section {
+    padding: 80px 0 90px;
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .cat-section-head {
+    padding: 0 36px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    max-width: 100%;
+  }
+  .cat-section-left { display: flex; align-items: baseline; gap: 24px; }
+  .cat-section-title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 60;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .cat-section-title em {
+    font-style: italic;
+    color: var(--terracotta);
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'WONK' 1;
+  }
+  .cat-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--ink-faded);
+    padding: 4px 10px;
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+  }
+  .cat-scroll-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--ink-faded);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat-scroll-hint::after { content: '→'; color: var(--saffron); }
+
+  /* scroll track */
+  .card-track {
+    display: flex;
+    gap: 16px;
+    padding: 0 36px 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    cursor: grab;
+  }
+  .card-track::-webkit-scrollbar { display: none; }
+  .card-track.dragging { cursor: grabbing; scroll-snap-type: none; }
+
+  /* individual scroll card */
+  .sc {
+    flex: 0 0 260px;
+    height: 380px;
+    border-radius: 6px;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.2,0.8,0.2,1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+  }
+  .sc:hover { transform: translateY(-5px); }
+
+  /* noise overlay on each card */
+  .sc::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='nc'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23nc)'/%3E%3C/svg%3E");
+    opacity: 0.2;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* NUT cards — warm walnut colour for all */
+  .sc-nut { background: #3d2510; color: #f0e6d0; }
+
+  /* SEED cards — each keeps its colour from the reference image */
+  .sc-chia     { background: #231e18; color: #f0e6d0; }
+  .sc-pumpkin  { background: #3a4820; color: #f0e6d0; }
+  .sc-sunflower{ background: #a84a18; color: #f0e6d0; }
+  .sc-flax     { background: #7a5c20; color: #f0e6d0; }
+
+  .sc-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    position: relative;
+    z-index: 2;
+  }
+  .sc-name {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 80;
+    font-size: 48px;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    margin: auto 0 10px;
+    position: relative;
+    z-index: 2;
+  }
+  .sc-name em {
+    display: block;
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'WONK' 1;
+    font-size: 0.85em;
+  }
+  .sc-desc {
+    font-size: 12px;
+    opacity: 0.6;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    max-width: 200px;
+  }
+  .sc-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    opacity: 0.55;
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid rgba(240,230,208,0.15);
+    padding-top: 14px;
+  }
+  .sc-foot .sc-arrow {
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateX(-4px);
+  }
+  .sc:hover .sc-arrow { opacity: 1; transform: translateX(0); }
+
+  /* scroll nav arrows */
+  .cat-nav {
+    padding: 20px 36px 0;
+    display: flex;
+    gap: 10px;
+  }
+  .cat-nav-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .cat-nav-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  /* ---------- ghee feature ---------- */
+  .ghee-feature {
+    background: linear-gradient(135deg, #f0c850 0%, #d49820 60%, #b87810 100%);
+    color: var(--ink);
+    padding: 100px 36px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .ghee-feature::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n3)'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .ghee-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+  .ghee-vis {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+  .ghee-jar {
+    width: 280px;
+    height: 380px;
+    position: relative;
+  }
+  .ghee-feature h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 80;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.92;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+  .ghee-feature h2 em {
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'WONK' 1;
+  }
+  .ghee-feature p {
+    font-size: 17px;
+    line-height: 1.65;
+    margin-bottom: 22px;
+    max-width: 460px;
+    color: #2a1a0f;
+  }
+  .ghee-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 32px;
+    margin-top: 32px;
+    max-width: 460px;
+    border-top: 1px solid rgba(42, 26, 15, 0.25);
+    padding-top: 24px;
+  }
+  .spec { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .spec strong { display: block; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.6; margin-bottom: 4px; font-weight: 500; }
+
+  /* ---------- gifting scroll cards ---------- */
+  .sc-gift { background: #3d1a22; color: #f5ecd8; }
+  .sc-gift .sc-quote {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'SOFT' 100;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(245,230,208,0.55);
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 2;
+  }
+  .sc-gift .sc-quote::before {
+    content: '"';
+    font-size: 1.6em;
+    line-height: 0;
+    vertical-align: -0.3em;
+    color: rgba(240,160,128,0.5);
+    margin-right: 3px;
+  }
+  .sc-gift .sc-name {
+    font-size: 38px;
+    color: #f5ecd8;
+  }
+  .sc-gift .sc-name em { color: rgba(240,160,128,0.85); }
+  .sc-gift .sc-desc { color: rgba(245,230,208,0.5); }
+  .sc-gift .sc-top { color: rgba(245,230,208,0.4); }
+  .sc-gift .sc-foot {
+    border-top-color: rgba(245,230,208,0.12);
+    color: rgba(245,230,208,0.4);
+  }
+  .sc-gift .sc-arrow { color: rgba(240,160,128,0.9); }
+
+  /* ===========================================================
+     Gift hamper card — v2: candlelight glow + hanging twine tag
+     =========================================================== */
+
+  /* card sits in 3D space so the title can "lift" toward the light */
+  .sc-gift {
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.22,0.9,0.3,1), box-shadow 0.6s ease;
+    will-change: transform;
+  }
+  .sc-gift:hover {
+    box-shadow:
+      0 26px 50px -18px rgba(0,0,0,0.6),
+      0 0 0 1px rgba(240,160,128,0.08),
+      0 0 56px rgba(255,180,120,0.10);
+  }
+
+  /* ---- candlelight glow that follows the cursor ---- */
+  .sc-gift .sc-glow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    background: radial-gradient(
+      circle 200px at var(--mx, 50%) var(--my, 30%),
+      rgba(255,190,120,0.30),
+      rgba(255,150,90,0.10) 45%,
+      transparent 72%
+    );
+    mix-blend-mode: soft-light;
+  }
+  .sc-gift:hover .sc-glow { opacity: 1; }
+
+  /* a second, tighter "flame core" that makes it feel like a lit diya */
+  .sc-gift .sc-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle 60px at var(--mx, 50%) var(--my, 30%),
+      rgba(255,225,180,0.35),
+      transparent 70%
+    );
+    mix-blend-mode: overlay;
+  }
+
+  /* title gently lifts toward the light, like catching a glow */
+  .sc-gift .sc-name {
+    transition: transform 0.5s cubic-bezier(0.22,0.9,0.3,1), text-shadow 0.5s ease;
+  }
+  .sc-gift:hover .sc-name {
+    transform: translateZ(26px);
+    text-shadow: 0 6px 24px rgba(255,170,110,0.25);
+  }
+
+  /* quote brightens, like reading the note tucked inside */
+  .sc-gift .sc-quote { transition: color 0.5s ease; }
+  .sc-gift:hover .sc-quote { color: rgba(250,240,225,0.85); }
+
+  /* ---- hanging gift-tag on a length of twine ---- */
+  .sc-gift .gift-tag {
+    position: absolute;
+    top: -4px;
+    right: 30px;
+    width: 46px;
+    z-index: 4;
+    transform-origin: 23px 6px;     /* pivot = where the twine meets the card */
+    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.35));
+    animation: tagSway 5s ease-in-out infinite;
+  }
+  .sc-gift:hover .gift-tag {
+    animation: tagSwayHover 1.1s ease-in-out infinite;
+  }
+  @keyframes tagSway {
+    0%, 100% { transform: rotate(-3deg); }
+    50%      { transform: rotate(3deg); }
+  }
+  @keyframes tagSwayHover {
+    0%, 100% { transform: rotate(-10deg); }
+    50%      { transform: rotate(10deg); }
+  }
+
+  .sc-gift .gift-tag .tag-twine {
+    stroke: rgba(245,230,208,0.35);
+    stroke-width: 1;
+    fill: none;
+  }
+  .sc-gift .gift-tag .tag-body {
+    fill: #e8d3ad;
+    stroke: rgba(58,18,28,0.35);
+    stroke-width: 1;
+    transition: fill 0.4s ease;
+  }
+  .sc-gift:hover .gift-tag .tag-body { fill: #f0deba; }
+  .sc-gift .gift-tag .tag-hole {
+    fill: #3d1a22;
+    opacity: 0.6;
+  }
+  .sc-gift .gift-tag .tag-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    fill: #7a2f18;
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+
+  /* ---------- saamaan ---------- */
+  .saamaan {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 100px 36px;
+    border-bottom: 1px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+  .saamaan::after {
+    content: 'SAAMAAN';
+    position: absolute;
+    right: -80px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Fraunces', serif;
+    font-size: 200px;
+    letter-spacing: -0.04em;
+    color: rgba(245,236,216,0.025);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .saamaan .section-head { margin-bottom: 70px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+  .saamaan .eyebrow { color: var(--gold); }
+  .saamaan .eyebrow::before { background: var(--gold); }
+  .saamaan .section-title em { color: var(--gold); }
+  .saamaan .section-aside { color: rgba(245, 236, 216, 0.6); }
+  .saamaan-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    max-width: 1400px;
+    margin: 0 auto;
+    border: 1px solid rgba(245,236,216,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .saamaan-item {
+    background: rgba(245,236,216,0.04);
+    padding: 0;
+    transition: all 0.4s cubic-bezier(0.2,0.8,0.2,1);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(245,236,216,0.08);
+  }
+  .saamaan-item:last-child { border-right: none; }
+  .saamaan-item:hover { background: rgba(245,236,216,0.09); }
+  .saamaan-item:hover .saamaan-vis-inner { transform: scale(1.05); }
+  .saamaan-vis {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid rgba(245,236,216,0.08);
+  }
+  .saamaan-vis-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.6s cubic-bezier(0.2,0.8,0.2,1);
+  }
+  .si-stanley .saamaan-vis { background: linear-gradient(160deg, rgba(184,138,58,0.2), rgba(20,12,6,0.8)); }
+  .si-tumbler .saamaan-vis { background: linear-gradient(160deg, rgba(107,115,65,0.2), rgba(20,12,6,0.8)); }
+  .si-mug    .saamaan-vis { background: linear-gradient(160deg, rgba(194,103,29,0.25), rgba(20,12,6,0.8)); }
+  .si-candle .saamaan-vis { background: linear-gradient(160deg, rgba(240,200,80,0.25), rgba(20,12,6,0.8)); }
+  .saamaan-body {
+    padding: 28px 26px 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .saamaan-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .saamaan-tag::before { content:''; width:16px; height:1px; background:var(--gold); }
+  .saamaan-name {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 60;
+    font-size: 26px;
+    line-height: 1.05;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .saamaan-name em {
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'WONK' 1;
+    color: var(--gold);
+  }
+  .saamaan-note {
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgba(245,236,216,0.5);
+    margin-bottom: 24px;
+    flex: 1;
+  }
+  .saamaan-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid rgba(245,236,216,0.1);
+    margin-top: auto;
+  }
+  .saamaan-variants {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: rgba(245,236,216,0.3);
+  }
+  .saamaan-cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.3s;
+  }
+  .saamaan-item:hover .saamaan-cta { gap: 10px; }
+
+  /* ---------- testimonials ---------- */
+  .testimonials {
+    padding: 90px 0;
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+    background: var(--bg-deeper);
+  }
+  .testimonials-head {
+    padding: 0 36px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 48px;
+  }
+  .testimonials-head-left { display: flex; flex-direction: column; gap: 10px; }
+  .testimonials-title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 400, 'SOFT' 60;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .testimonials-title em {
+    font-style: italic;
+    color: var(--saffron);
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'WONK' 1;
+  }
+  .testimonials-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--ink-faded);
+    text-transform: uppercase;
+  }
+
+  /* review card */
+  .review-track {
+    display: flex;
+    gap: 20px;
+    padding: 4px 36px 24px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    cursor: grab;
+  }
+  .review-track::-webkit-scrollbar { display: none; }
+  .review-track.dragging { cursor: grabbing; }
+
+  .review-card {
+    flex: 0 0 360px;
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 32px 30px 28px;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.4s cubic-bezier(0.2,0.8,0.2,1), border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .review-card::before {
+    content: '\201C';
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    font-family: 'Fraunces', serif;
+    font-size: 140px;
+    color: var(--saffron);
+    opacity: 0.07;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .review-card:hover { transform: translateY(-4px); border-color: var(--saffron); }
+
+  .review-stars {
+    display: flex;
+    gap: 3px;
+    font-size: 14px;
+  }
+  .review-title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 500;
+    font-size: 20px;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  .review-body {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .review-foot {
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .review-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--bg);
+    font-style: italic;
+    flex-shrink: 0;
+  }
+  .review-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .review-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--olive);
+    background: rgba(107,115,65,0.12);
+    padding: 3px 7px;
+    border-radius: 20px;
+    margin-left: auto;
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    background: var(--bg-deeper);
+    padding: 80px 36px 30px;
+  }
+  .foot-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+  .foot-brand {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 500, 'WONK' 1;
+    font-size: 64px;
+    line-height: 0.9;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+  .foot-brand em {
+    font-style: italic;
+    color: var(--saffron);
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'WONK' 1;
+  }
+  .foot-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 360px;
+  }
+  .foot-col h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    color: var(--ink-faded);
+    font-weight: 500;
+  }
+  .foot-col ul {
+    list-style: none;
+  }
+  .foot-col li { padding: 5px 0; }
+  .foot-col a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .foot-col a:hover { color: var(--saffron); }
+  .foot-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 30px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faded);
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  /* ---------- mobile ---------- */
+  @media (max-width: 980px) {
+    nav.top { padding: 14px 20px; }
+    .nav-links { display: none; }
+    .nav-meta { display: none; }
+    .hero-banner { height: auto; min-height: 100svh; }
+    .slide-content { grid-template-columns: 1fr; gap: 20px; padding: 80px 0 100px; }
+    .slide-vis { display: none; }
+    .slide-h1 { font-size: clamp(42px, 12vw, 72px); }
+    .section { padding: 60px 20px; }
+    .ghee-feature { padding: 70px 20px; }
+    .ghee-inner { grid-template-columns: 1fr; gap: 40px; }
+    .story { padding: 70px 20px; }
+    .saamaan { padding: 70px 20px; }
+    .catalogue { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 1; }
+    .span-6.wide, .span-8.wide { grid-column: span 2; }
+    .saamaan-grid { grid-template-columns: repeat(2, 1fr); border-radius: 6px; }
+    .foot-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .foot-brand { font-size: 44px; }
+    .cat-strip-inner span { font-size: 26px; padding: 0 18px; gap: 18px; }
+    footer { padding: 60px 20px 30px; }
+  }
+  @media (max-width: 560px) {
+    .catalogue { grid-template-columns: 1fr; }
+    .span-6.wide, .span-8.wide { grid-column: span 1; }
+    .saamaan-grid { grid-template-columns: 1fr; }
+    .foot-inner { grid-template-columns: 1fr; gap: 30px; }
+  }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ---------- product modal styles ---------- */
+  .product-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 26, 15, 0.85);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+  }
+  .product-modal.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal-content {
+    background: var(--bg);
+    border-radius: 12px;
+    max-width: 90vw;
+    width: 100%;
+    max-height: 85vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  .modal-carousel {
+    position: relative;
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg-deeper) 0%, var(--bg) 100%);
+    overflow: hidden;
+  }
+  .carousel-slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    padding: 40px;
+  }
+  .carousel-slide.active { opacity: 1; }
+  .carousel-slide img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .modal-info {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+  }
+  .modal-header {
+    margin-bottom: 24px;
+  }
+  .modal-title {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .modal-meta {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faded);
+    margin-bottom: 16px;
+  }
+  .modal-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+
+  .modal-carousel-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rule);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .carousel-dot.active {
+    background: var(--saffron);
+    transform: scale(1.3);
+  }
+  .carousel-dot:hover { background: var(--saffron); }
+
+  .modal-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+  }
+  .detail-item {
+    padding: 12px;
+    background: var(--bg-card);
+    border-radius: 6px;
+    border-left: 3px solid var(--saffron);
+  }
+  .detail-label {
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .detail-value {
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+  .modal-btn {
+    flex: 1;
+    padding: 12px 16px;
+    background: var(--saffron);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .modal-btn:hover { background: var(--terracotta); transform: translateY(-2px); }
+  .modal-btn.secondary {
+    background: var(--bg-card);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+  }
+  .modal-btn.secondary:hover { background: var(--bg-deeper); }
+
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 10;
+  }
+  .modal-close:hover { background: var(--saffron); color: var(--bg); border-color: var(--saffron); }
+
+  .carousel-arrows {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+  .carousel-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.8);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    transition: all 0.3s;
+    color: var(--ink);
+  }
+  .carousel-btn:hover { background: var(--saffron); color: var(--bg); }
+
+  @media (max-width: 768px) {
+    .modal-content { grid-template-columns: 1fr; }
+    .modal-info { padding: 24px; }
+    .modal-title { font-size: 24px; }
+    .modal-details { grid-template-columns: 1fr; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- announcement -->
+<div class="strip"><span>◆  Free dispatch above ₹1499  ◆  Catalogue No. 04, Vol. ii  ◆  Sourced from Kashmir to Karnataka</span></div>
+
+<!-- nav -->
+<nav class="top">
+  <a href="#" class="logo">AMRITVEDA</a>
+  <ul class="nav-links">
+    <li><a href="#catalogue">Catalogue</a></li>
+    <li><a href="#ghee">Desi Ghee</a></li>
+    <li><a href="#kits">Gifting</a></li>
+    <li><a href="#saamaan">Saamaan</a></li>
+    <li><a href="https://wa.me/918278502650" target="_blank">WhatsApp</a></li>
+  </ul>
+
+</nav>
+
+<!-- hero banner -->
+<section class="hero-banner" id="hero">
+
+  <!-- Slide 1: Premium Nuts -->
+  <div class="banner-slide bs-nuts active">
+    <div class="slide-content">
+      <div class="slide-text">
+        <div class="slide-num">01 / 05 · Premium Nuts</div>
+        <h1 class="slide-h1">Indigenous<br><em>dry fruits,</em><br>sourced right.</h1>
+        <p class="slide-body">Mamra almonds from Pulwama. Akhrot from Anantnag. Anjeer via Kandahar. Each nut has a postcode — and a reason to be here.</p>
+        <a href="#catalogue" class="slide-cta">Explore Nuts <span class="arr">→</span></a>
+      </div>
+      <div class="slide-vis">
+        <svg viewBox="0 0 320 380" width="85%" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- almond -->
+          <ellipse cx="100" cy="160" rx="44" ry="72" transform="rotate(-18 100 160)" fill="#c9a86a" opacity="0.9"/>
+          <ellipse cx="100" cy="160" rx="28" ry="55" transform="rotate(-18 100 160)" fill="#b88a4a" opacity="0.7"/>
+          <path d="M88 115 Q105 140, 100 180 Q95 140, 88 115 Z" fill="#d4a86a" opacity="0.4"/>
+          <!-- walnut -->
+          <ellipse cx="220" cy="200" rx="55" ry="48" fill="#7a5030" opacity="0.85"/>
+          <path d="M220 155 Q248 170, 268 200 Q248 230, 220 245 Q192 230, 172 200 Q192 170, 220 155 Z" fill="#6b4428" opacity="0.6"/>
+          <path d="M220 158 Q220 245, 220 245" stroke="#5a3820" stroke-width="2" opacity="0.5"/>
+          <path d="M172 200 Q268 200, 268 200" stroke="#5a3820" stroke-width="2" opacity="0.5"/>
+          <!-- cashew -->
+          <path d="M160 280 Q155 240, 185 230 Q215 220, 215 250 Q215 270, 195 278 Q175 286, 160 280 Z" fill="#d9bb82" opacity="0.9"/>
+          <!-- small pista -->
+          <ellipse cx="260" cy="110" rx="28" ry="38" transform="rotate(10 260 110)" fill="#8a9550" opacity="0.8"/>
+          <ellipse cx="260" cy="110" rx="16" ry="26" transform="rotate(10 260 110)" fill="#6b7438" opacity="0.8"/>
+          <!-- label -->
+          <rect x="30" y="30" width="120" height="44" rx="4" fill="rgba(42,26,15,0.08)" stroke="rgba(42,26,15,0.15)" stroke-width="1"/>
+          <text x="90" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" fill="#2a1a0f" opacity="0.5">AMRITVEDA</text>
+          <text x="90" y="63" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="14" fill="#c2671d">Premium Nuts</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2: Healthy Seeds -->
+  <div class="banner-slide bs-seeds">
+    <div class="slide-content">
+      <div class="slide-text">
+        <div class="slide-num">02 / 05 · Healthy Seeds</div>
+        <h1 class="slide-h1">Small seeds,<br><em>serious</em><br>nourishment.</h1>
+        <p class="slide-body">Chia, flax, pumpkin, sunflower — four seeds that quietly do the heavy lifting. Cold-stored, minimally processed, nothing added.</p>
+        <a href="#catalogue" class="slide-cta">Explore Seeds <span class="arr">→</span></a>
+      </div>
+      <div class="slide-vis">
+        <svg viewBox="0 0 320 380" width="85%" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- seed scatter -->
+          <g opacity="0.9">
+            <!-- chia dots -->
+            <circle cx="80" cy="120" r="6" fill="#3a2f28"/><circle cx="96" cy="108" r="5" fill="#3a2f28"/>
+            <circle cx="70" cy="136" r="7" fill="#4a3f38"/><circle cx="90" cy="148" r="5" fill="#3a2f28"/>
+            <circle cx="108" cy="128" r="6" fill="#3a2f28"/><circle cx="76" cy="156" r="5" fill="#4a3f38"/>
+            <!-- pumpkin seeds -->
+            <ellipse cx="190" cy="100" rx="14" ry="26" transform="rotate(-20 190 100)" fill="#6b8040"/>
+            <ellipse cx="215" cy="130" rx="14" ry="26" transform="rotate(15 215 130)" fill="#7a9048"/>
+            <ellipse cx="175" cy="145" rx="14" ry="26" transform="rotate(-35 175 145)" fill="#6b8040"/>
+            <!-- sunflower seeds -->
+            <ellipse cx="240" cy="220" rx="10" ry="20" transform="rotate(10 240 220)" fill="#b88a3a"/>
+            <ellipse cx="260" cy="240" rx="10" ry="20" transform="rotate(-15 260 240)" fill="#c29a4a"/>
+            <ellipse cx="225" cy="245" rx="10" ry="20" transform="rotate(30 225 245)" fill="#b88a3a"/>
+            <!-- flax seeds -->
+            <ellipse cx="120" cy="270" rx="8" ry="16" transform="rotate(-5 120 270)" fill="#a07838"/>
+            <ellipse cx="138" cy="285" rx="8" ry="16" transform="rotate(20 138 285)" fill="#a07838"/>
+            <ellipse cx="104" cy="290" rx="8" ry="16" transform="rotate(-20 104 290)" fill="#907030"/>
+          </g>
+          <!-- glass bowl outline -->
+          <path d="M60 180 Q60 320, 160 340 Q260 320, 260 180 Z" fill="rgba(42,26,15,0.04)" stroke="rgba(42,26,15,0.12)" stroke-width="1.5"/>
+          <rect x="30" y="30" width="130" height="44" rx="4" fill="rgba(42,26,15,0.07)" stroke="rgba(42,26,15,0.15)" stroke-width="1"/>
+          <text x="95" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" fill="#2a1a0f" opacity="0.5">AMRITVEDA</text>
+          <text x="95" y="63" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="14" fill="#c2671d">Healthy Seeds</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3: Desi Ghee -->
+  <div class="banner-slide bs-ghee">
+    <div class="slide-content">
+      <div class="slide-text">
+        <div class="slide-num">03 / 05 · Desi Ghee</div>
+        <h1 class="slide-h1">Bilona ghee,<br><em>the slow</em><br>way only.</h1>
+        <p class="slide-body">A2 Gir cow milk. Curd set overnight. Butter hand-churned at dawn. Simmered in copper till golden. No centrifuges. No shortcuts. Forty minutes, every time.</p>
+        <a href="#ghee" class="slide-cta">Discover Ghee <span class="arr">→</span></a>
+      </div>
+      <div class="slide-vis">
+        <svg viewBox="0 0 280 380" width="82%" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <rect x="60" y="20" width="160" height="36" rx="4" fill="#3d2818"/>
+          <rect x="58" y="50" width="164" height="8" rx="2" fill="#2a1a0f"/>
+          <path d="M55 70 L55 350 Q55 365, 70 365 L210 365 Q225 365, 225 350 L225 70 Z" fill="#f5ecd8" stroke="#2a1a0f" stroke-width="2"/>
+          <path d="M58 130 L58 350 Q58 362, 70 362 L210 362 Q222 362, 222 350 L222 130 Z" fill="#d49820"/>
+          <rect x="80" y="170" width="120" height="130" fill="#efe6d2" stroke="#2a1a0f" stroke-width="1"/>
+          <text x="140" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="7" letter-spacing="1.5" fill="#2a1a0f">AMRITVEDA · N° 13</text>
+          <line x1="95" y1="208" x2="185" y2="208" stroke="#2a1a0f" stroke-width="0.4"/>
+          <text x="140" y="240" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="20" fill="#2a1a0f">Desi</text>
+          <text x="140" y="262" text-anchor="middle" font-family="Fraunces" font-size="22" font-weight="500" fill="#2a1a0f">Ghee</text>
+          <line x1="95" y1="275" x2="185" y2="275" stroke="#2a1a0f" stroke-width="0.4"/>
+          <text x="140" y="288" text-anchor="middle" font-family="JetBrains Mono" font-size="6" letter-spacing="1" fill="#5a4632">A2 · BILONA · 500ML</text>
+          <ellipse cx="80" cy="200" rx="8" ry="80" fill="#fff" opacity="0.2"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: Saamaan -->
+  <div class="banner-slide bs-saamaan">
+    <div class="slide-content">
+      <div class="slide-text">
+        <div class="slide-num">04 / 05 · Saamaan</div>
+        <h1 class="slide-h1">Carry the<br>ritual<br><em>with you.</em></h1>
+        <p class="slide-body">Stanley Quenchers. Insulated tumblers. Travel coffee mugs. Hand-poured artisanal candles. Objects made to earn their place.</p>
+        <a href="#saamaan" class="slide-cta">View Saamaan <span class="arr">→</span></a>
+      </div>
+      <div class="slide-vis">
+        <svg viewBox="0 0 320 380" width="85%" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- stanley cup -->
+          <path d="M95 60 L88 290 Q88 305, 100 305 L150 305 Q162 305, 162 290 L155 60 Z" fill="rgba(184,138,58,0.15)" stroke="rgba(184,138,58,0.5)" stroke-width="2"/>
+          <path d="M93 60 Q93 44, 125 44 Q157 44, 157 60 L157 76 Q157 84, 125 84 Q93 84, 93 76 Z" fill="rgba(184,138,58,0.3)" stroke="rgba(184,138,58,0.6)" stroke-width="1.5"/>
+          <path d="M158 130 Q182 130, 182 155 Q182 180, 158 180" stroke="rgba(184,138,58,0.6)" stroke-width="5" stroke-linecap="round"/>
+          <text x="125" y="200" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="11" fill="rgba(184,138,58,0.6)">amritveda</text>
+          <!-- candle -->
+          <path d="M200 90 Q206 100, 204 112 Q202 120, 200 122 Q198 120, 196 112 Q194 100, 200 90 Z" fill="rgba(240,200,80,0.7)"/>
+          <line x1="200" y1="122" x2="200" y2="130" stroke="rgba(42,26,15,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M172 130 L168 300 Q168 312, 180 312 L220 312 Q232 312, 232 300 L228 130 Z" fill="rgba(240,200,80,0.1)" stroke="rgba(240,200,80,0.45)" stroke-width="1.5"/>
+          <text x="200" y="225" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="9" fill="rgba(240,200,80,0.65)">amritveda</text>
+          <!-- label bg -->
+          <rect x="50" y="30" width="130" height="40" rx="4" fill="rgba(245,236,216,0.05)" stroke="rgba(245,236,216,0.1)" stroke-width="1"/>
+          <text x="115" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="7" letter-spacing="1.5" fill="rgba(245,236,216,0.4)">AMRITVEDA</text>
+          <text x="115" y="60" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="12" fill="rgba(184,138,58,0.7)">Saamaan</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Gifting Hampers -->
+  <div class="banner-slide bs-gifting">
+    <div class="slide-content">
+      <div class="slide-text">
+        <div class="slide-num">05 / 05 · Gifting</div>
+        <h1 class="slide-h1">For the ones<br>who deserve<br><em>the real thing.</em></h1>
+        <p class="slide-body">Three hand-built hampers — packed in pinewood crates with brass clasps. For Diwali, for mothers, for every occasion that calls for more than an envelope.</p>
+        <a href="#kits" class="slide-cta">View Hampers <span class="arr">→</span></a>
+      </div>
+      <div class="slide-vis">
+        <svg viewBox="0 0 320 360" width="85%" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- crate box -->
+          <path d="M50 160 L50 320 L270 320 L270 160 Z" fill="rgba(245,236,216,0.06)" stroke="rgba(245,236,216,0.2)" stroke-width="2"/>
+          <!-- lid open -->
+          <path d="M50 160 L50 120 L270 120 L270 160" fill="rgba(245,236,216,0.04)" stroke="rgba(245,236,216,0.2)" stroke-width="2"/>
+          <!-- wood slats -->
+          <line x1="50" y1="200" x2="270" y2="200" stroke="rgba(245,236,216,0.1)" stroke-width="1"/>
+          <line x1="50" y1="240" x2="270" y2="240" stroke="rgba(245,236,216,0.1)" stroke-width="1"/>
+          <line x1="50" y1="280" x2="270" y2="280" stroke="rgba(245,236,216,0.1)" stroke-width="1"/>
+          <!-- brass clasps -->
+          <rect x="152" y="154" width="16" height="12" rx="2" fill="rgba(184,138,58,0.7)" stroke="rgba(184,138,58,0.4)" stroke-width="1"/>
+          <!-- jar 1 -->
+          <path d="M80 200 L78 310 Q78 318, 86 318 L118 318 Q126 318, 126 310 L124 200 Z" fill="rgba(212,152,32,0.25)" stroke="rgba(212,152,32,0.5)" stroke-width="1.5"/>
+          <rect x="80" y="195" width="44" height="10" rx="2" fill="rgba(212,152,32,0.35)" stroke="rgba(212,152,32,0.4)" stroke-width="1"/>
+          <!-- jar 2 -->
+          <path d="M145 200 L143 310 Q143 318, 151 318 L183 318 Q191 318, 191 310 L189 200 Z" fill="rgba(201,168,106,0.25)" stroke="rgba(201,168,106,0.5)" stroke-width="1.5"/>
+          <rect x="145" y="195" width="44" height="10" rx="2" fill="rgba(201,168,106,0.35)" stroke="rgba(201,168,106,0.4)" stroke-width="1"/>
+          <!-- jar 3 -->
+          <path d="M210 200 L208 310 Q208 318, 216 318 L238 318 Q246 318, 246 310 L244 200 Z" fill="rgba(107,115,65,0.25)" stroke="rgba(107,115,65,0.5)" stroke-width="1.5"/>
+          <rect x="210" y="195" width="34" height="10" rx="2" fill="rgba(107,115,65,0.35)" stroke="rgba(107,115,65,0.4)" stroke-width="1"/>
+          <!-- ribbon -->
+          <path d="M160 120 L160 160" stroke="rgba(240,160,128,0.6)" stroke-width="3"/>
+          <path d="M140 120 Q160 140, 180 120" stroke="rgba(240,160,128,0.6)" stroke-width="2.5" fill="none"/>
+          <path d="M140 120 Q160 100, 180 120" stroke="rgba(240,160,128,0.6)" stroke-width="2.5" fill="none"/>
+          <!-- label -->
+          <rect x="55" y="30" width="130" height="44" rx="4" fill="rgba(245,236,216,0.05)" stroke="rgba(245,236,216,0.1)" stroke-width="1"/>
+          <text x="120" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="7" letter-spacing="1.5" fill="rgba(245,236,216,0.35)">AMRITVEDA</text>
+          <text x="120" y="63" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="12" fill="rgba(240,160,128,0.7)">Gifting</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- progress bar -->
+  <div class="banner-progress" id="bprog"></div>
+
+  <!-- dot controls -->
+  <div class="banner-controls" id="bdots">
+    <button class="b-dot on" data-i="0"></button>
+    <button class="b-dot" data-i="1"></button>
+    <button class="b-dot" data-i="2"></button>
+    <button class="b-dot" data-i="3"></button>
+    <button class="b-dot" data-i="4"></button>
+  </div>
+
+  <div class="slide-count" id="scount">01 — 05</div>
+
+</section>
+
+<!-- ticker -->
+<div class="cat-strip">
+  <div class="cat-strip-inner">
+    <span>Almonds</span><span>Raisins</span><span>Anjeer</span><span>Makhana</span><span>Munakka</span><span>Walnuts</span><span>Pista</span><span>Cashews</span><span>Chia</span><span>Pumpkin Seeds</span><span>Sunflower</span><span>Flax</span><span>Desi Ghee</span><span>Gifting</span>
+    <span>Almonds</span><span>Raisins</span><span>Anjeer</span><span>Makhana</span><span>Munakka</span><span>Walnuts</span><span>Pista</span><span>Cashews</span><span>Chia</span><span>Pumpkin Seeds</span><span>Sunflower</span><span>Flax</span><span>Desi Ghee</span><span>Gifting</span>
+  </div>
+</div>
+
+<!-- nuts section -->
+<div class="cat-section" id="catalogue">
+  <div class="cat-section-head reveal">
+    <div class="cat-section-left">
+      <h2 class="cat-section-title">Premium <em>Nuts</em></h2>
+      <span class="cat-count">08 items</span>
+    </div>
+    <span class="cat-scroll-hint">Scroll to browse</span>
+  </div>
+
+  <div class="card-track" id="track-nuts">
+
+    <div class="sc sc-nut">
+      <div class="sc-top"><span>№ 001 · Mamra</span><span>Kashmir</span></div>
+      <div>
+        <div class="sc-name">Almonds<br><em>— Mamra.</em></div>
+        <div class="sc-desc">Smaller, oilier, irregular — sun-dried on terraces in Pulwama, never bleached.</div>
+      </div>
+      <div class="sc-foot"><span>250g · 500g · 1kg</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-nut">
+      <div class="sc-top"><span>№ 002</span><span>Nashik</span></div>
+      <div>
+        <div class="sc-name">Kishmish<br><em>raisins.</em></div>
+        <div class="sc-desc">Long, amber, sun-cured. From Thompson seedless vines.</div>
+      </div>
+      <div class="sc-foot"><span>500g · 1kg</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-nut">
+      <div class="sc-top"><span>№ 003</span><span>Afghan</span></div>
+      <div>
+        <div class="sc-name">Anjeer<br><em>(figs.)</em></div>
+        <div class="sc-desc">Pale ivory outside, jammy inside. Hand-flattened, never sulphured.</div>
+      </div>
+      <div class="sc-foot"><span>250g · 500g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-nut">
+      <div class="sc-top"><span>№ 004</span><span>Mithila</span></div>
+      <div>
+        <div class="sc-name">Makhana<br><em>fox-nuts.</em></div>
+        <div class="sc-desc">Popped lotus seeds from the ponds of Bihar. Roasted in small batches.</div>
+      </div>
+      <div class="sc-foot"><span>100g · 250g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-nut">
+      <div class="sc-top"><span>№ 005</span><span>Himachal</span></div>
+      <div>
+        <div class="sc-name">Munakka,<br><em>with seed.</em></div>
+        <div class="sc-desc">The bigger, blacker, slower-dried cousin of the raisin.</div>
+      </div>
+      <div class="sc-foot"><span>250g · 500g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-nut">
+      <div class="sc-top"><span>№ 006</span><span>Kashmir</span></div>
+      <div>
+        <div class="sc-name">Walnuts,<br><em>halved.</em></div>
+        <div class="sc-desc">Light-skinned akhrot from Anantnag. Pale, not bitter; cold-stored.</div>
+      </div>
+      <div class="sc-foot"><span>250g · 500g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-nut">
+      <div class="sc-top"><span>№ 007 · Salted</span><span>Iran</span></div>
+      <div>
+        <div class="sc-name">Pista<br><em>roasted.</em></div>
+        <div class="sc-desc">Grass-green, splits its own shell. Roasted with rock-salt, never oiled.</div>
+      </div>
+      <div class="sc-foot"><span>250g · 500g · 1kg</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-nut">
+      <div class="sc-top"><span>№ 008 · W240</span><span>Konkan</span></div>
+      <div>
+        <div class="sc-name">Cashews<br><em>— W240.</em></div>
+        <div class="sc-desc">Whole, ivory, unbroken. Steam-cooked from the orchards of Vengurla.</div>
+      </div>
+      <div class="sc-foot"><span>250g · 500g · 1kg</span><span class="sc-arrow">→</span></div>
+    </div>
+
+  </div>
+
+  <div class="cat-nav">
+    <button class="cat-nav-btn" onclick="scrollTrack('track-nuts',-1)">←</button>
+    <button class="cat-nav-btn" onclick="scrollTrack('track-nuts', 1)">→</button>
+  </div>
+</div>
+
+<!-- seeds section -->
+<div class="cat-section" id="seeds">
+  <div class="cat-section-head reveal">
+    <div class="cat-section-left">
+      <h2 class="cat-section-title">Healthy <em>Seeds</em></h2>
+      <span class="cat-count">04 items</span>
+    </div>
+    <span class="cat-scroll-hint">Scroll to browse</span>
+  </div>
+
+  <div class="card-track" id="track-seeds">
+
+    <div class="sc sc-chia">
+      <div class="sc-top"><span>№ 009</span><span>Mexico</span></div>
+      <div>
+        <div class="sc-name">Chia<br><em>seed.</em></div>
+        <div class="sc-desc">Small, mottled, mighty.</div>
+      </div>
+      <div class="sc-foot"><span>200g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-pumpkin">
+      <div class="sc-top"><span>№ 010</span><span>Austrian</span></div>
+      <div>
+        <div class="sc-name">Pumpkin<br><em>seed.</em></div>
+        <div class="sc-desc">Hulled, dark-green, faintly nutty.</div>
+      </div>
+      <div class="sc-foot"><span>200g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-sunflower">
+      <div class="sc-top"><span>№ 011</span><span>Karnataka</span></div>
+      <div>
+        <div class="sc-name">Sunflower<br><em>seed.</em></div>
+        <div class="sc-desc">Hulled kernels, lightly roasted.</div>
+      </div>
+      <div class="sc-foot"><span>200g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-flax">
+      <div class="sc-top"><span>№ 012</span><span>Madhya Pr.</span></div>
+      <div>
+        <div class="sc-name">Flax<br><em>(alsi).</em></div>
+        <div class="sc-desc">Golden, oily, cold-pressed-ready.</div>
+      </div>
+      <div class="sc-foot"><span>200g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+  </div>
+
+  <div class="cat-nav">
+    <button class="cat-nav-btn" onclick="scrollTrack('track-seeds',-1)">←</button>
+    <button class="cat-nav-btn" onclick="scrollTrack('track-seeds', 1)">→</button>
+  </div>
+</div>
+
+<!-- desi ghee feature -->
+<section class="ghee-feature" id="ghee">
+  <div class="ghee-inner">
+    <div class="ghee-vis reveal">
+      <svg class="ghee-jar" viewBox="0 0 280 380" xmlns="http://www.w3.org/2000/svg">
+        <!-- lid -->
+        <rect x="60" y="20" width="160" height="36" rx="4" fill="#3d2818"/>
+        <rect x="58" y="50" width="164" height="8" rx="2" fill="#2a1a0f"/>
+        <!-- jar -->
+        <path d="M55 70 L55 350 Q55 365, 70 365 L210 365 Q225 365, 225 350 L225 70 Z" fill="#f5ecd8" stroke="#2a1a0f" stroke-width="2"/>
+        <!-- ghee level -->
+        <path d="M58 130 L58 350 Q58 362, 70 362 L210 362 Q222 362, 222 350 L222 130 Z" fill="#d49820"/>
+        <!-- label -->
+        <rect x="80" y="170" width="120" height="130" fill="#efe6d2" stroke="#2a1a0f" stroke-width="1"/>
+        <text x="140" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="7" letter-spacing="1.5" fill="#2a1a0f">AMRITVEDA · N° 13</text>
+        <line x1="95" y1="208" x2="185" y2="208" stroke="#2a1a0f" stroke-width="0.4"/>
+        <text x="140" y="240" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="20" fill="#2a1a0f">Desi</text>
+        <text x="140" y="262" text-anchor="middle" font-family="Fraunces" font-size="22" font-weight="500" fill="#2a1a0f">Ghee</text>
+        <line x1="95" y1="275" x2="185" y2="275" stroke="#2a1a0f" stroke-width="0.4"/>
+        <text x="140" y="288" text-anchor="middle" font-family="JetBrains Mono" font-size="6" letter-spacing="1" fill="#5a4632">A2 · BILONA · 500ML</text>
+        <!-- shine -->
+        <ellipse cx="80" cy="200" rx="8" ry="80" fill="#fff" opacity="0.2"/>
+      </svg>
+    </div>
+    <div class="reveal">
+      <div class="eyebrow" style="color: rgba(42, 26, 15, 0.6);"><span style="background: #2a1a0f; width: 24px; height: 1px; display: inline-block;"></span>&nbsp;&nbsp;No. 13 · Desi Ghee</div>
+      <h2>Slow-stirred,<br>bilona <em>ghee.</em></h2>
+      <p>From the milk of free-grazed Gir cows in Anand, hand-churned the bilona way — curd first, butter second, ghee last. No shortcuts, no centrifuges; just a copper pot, a wooden ladle, and forty patient minutes.</p>
+      <div class="ghee-specs">
+        <div class="spec"><strong>Method</strong>Bilona, copper-pot</div>
+        <div class="spec"><strong>Cow breed</strong>Gir, A2-only</div>
+        <div class="spec"><strong>Smoke point</strong>250 °C</div>
+        <div class="spec"><strong>Format</strong>250ml · 500ml · 1L</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- gifting kits -->
+<div class="cat-section" id="kits">
+  <div class="cat-section-head reveal">
+    <div class="cat-section-left">
+      <h2 class="cat-section-title">Given with care,<br><em>remembered forever.</em></h2>
+      <span class="cat-count">10 hampers</span>
+    </div>
+    <span class="cat-scroll-hint">Scroll to browse</span>
+  </div>
+
+  <div class="card-track" id="track-kits">
+
+    <div class="sc sc-gift">
+      <div class="sc-top"><span>№ 01</span><span>The Petit</span></div>
+      <div>
+        <div class="sc-name">The Petit<br><em>Hamper.</em></div>
+        <div class="sc-quote">A gift given in love has the power to wipe out any storm.</div>
+        <div class="sc-desc">4 compartments. Almonds, cashews, raisins, walnuts. Decorative painted box. The gift you give when you mean it quietly.</div>
+      </div>
+      <div class="sc-foot"><span>4 varieties · ~700g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-gift">
+      <div class="sc-top"><span>№ 02</span><span>The Festival</span></div>
+      <div>
+        <div class="sc-name">The Festival<br><em>Box.</em></div>
+        <div class="sc-quote">It's not just a gift. It's giving your soul a lift.</div>
+        <div class="sc-desc">Pink & gold sectioned box. Almonds, cashews, raisins, apricots. The classic Diwali gesture, done properly.</div>
+      </div>
+      <div class="sc-foot"><span>5 varieties · ~900g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-gift">
+      <div class="sc-top"><span>№ 03</span><span>The Artisan</span></div>
+      <div>
+        <div class="sc-name">The Artisan<br><em>Crate.</em></div>
+        <div class="sc-quote">Giving is a spark that can ignite a fire.</div>
+        <div class="sc-desc">Hand-painted teal box. Cashews, pistachios, makhana, almonds. Where craft meets care.</div>
+      </div>
+      <div class="sc-foot"><span>4 varieties · ~800g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-gift">
+      <div class="sc-top"><span>№ 04</span><span>The Jar Trio</span></div>
+      <div>
+        <div class="sc-name">The Jar<br><em>Trio.</em></div>
+        <div class="sc-quote">Give not because you feel guilty, but because you want to share the love.</div>
+        <div class="sc-desc">Three sealed glass jars. Cashews, almonds, pistachios. On a linen-lined tray. Refillable, forever.</div>
+      </div>
+      <div class="sc-foot"><span>3 jars · ~750g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-gift">
+      <div class="sc-top"><span>№ 05</span><span>The Tin Set</span></div>
+      <div>
+        <div class="sc-name">Heritage<br><em>Tin Set.</em></div>
+        <div class="sc-quote">Joy is found through giving to others, not by what you receive.</div>
+        <div class="sc-desc">Teal box, three signature tins. Almonds, mixed nuts, a seeds blend. A hamper that lives on the shelf long after it's opened.</div>
+      </div>
+      <div class="sc-foot"><span>3 tins · ~900g</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-gift">
+      <div class="sc-top"><span>№ 06</span><span>The Tray</span></div>
+      <div>
+        <div class="sc-name">The Wooden<br><em>Tray.</em></div>
+        <div class="sc-quote">It isn't the gift they gave, but the impact they made.</div>
+        <div class="sc-desc">Natural wood. 4 open sections. Almonds, walnuts, cashews, anjeer. For the home that appreciates the honest beauty of a well-laid table.</div>
+      </div>
+      <div class="sc-foot"><span>4 varieties · ~1kg</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-gift">
+      <div class="sc-top"><span>№ 07</span><span>The Grand</span></div>
+      <div>
+        <div class="sc-name">The Grand<br><em>Assortment.</em></div>
+        <div class="sc-quote">Give gifts with no strings attached.</div>
+        <div class="sc-desc">Large compartment box. 8+ varieties — almonds, pista, cashews, raisins, anjeer, walnuts, apricots, munakka. For when only abundance will do.</div>
+      </div>
+      <div class="sc-foot"><span>8+ varieties · ~1.6kg</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-gift">
+      <div class="sc-top"><span>№ 08</span><span>The Luxury</span></div>
+      <div>
+        <div class="sc-name">The Luxury<br><em>Grid.</em></div>
+        <div class="sc-quote">A gift given out of obligation isn't a gift. It's a fee.</div>
+        <div class="sc-desc">Deep-blue premium box. 12 individual sections, brass clasp. Every nut, every dried fruit — the full AMRITVEDA pantry in one box.</div>
+      </div>
+      <div class="sc-foot"><span>12 varieties · ~2kg</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-gift">
+      <div class="sc-top"><span>№ 09</span><span>Diwali Edit</span></div>
+      <div>
+        <div class="sc-name">The Diwali<br><em>Edit.</em></div>
+        <div class="sc-quote">One small deed can have a huge impact.</div>
+        <div class="sc-desc">Wooden box with 6 sections + 2 diyas included. Almonds, cashews, pista, raisins, anjeer, walnuts. Everything for the night of lights.</div>
+      </div>
+      <div class="sc-foot"><span>6 varieties + diyas</span><span class="sc-arrow">→</span></div>
+    </div>
+
+    <div class="sc sc-gift">
+      <div class="sc-top"><span>№ 10</span><span>The Royal</span></div>
+      <div>
+        <div class="sc-name">The Royal<br><em>Hamper.</em></div>
+        <div class="sc-quote">A truly thoughtful gift is one that you know the receiver will love.</div>
+        <div class="sc-desc">Blue luxury box with hand-engraved silver katoris. Bilona ghee, premium nuts, dried fruits. For the rare occasion that asks for something unforgettable.</div>
+      </div>
+      <div class="sc-foot"><span>Full hamper · ~2.5kg</span><span class="sc-arrow">→</span></div>
+    </div>
+
+  </div>
+
+  <div class="cat-nav">
+    <button class="cat-nav-btn" onclick="scrollTrack('track-kits',-1)">←</button>
+    <button class="cat-nav-btn" onclick="scrollTrack('track-kits', 1)">→</button>
+  </div>
+</div>
+
+<!-- saamaan / merch -->
+<section class="saamaan" id="saamaan">
+  <div class="section-head reveal">
+    <div>
+      <div class="eyebrow">No. 15 · Saamaan</div>
+      <h2 class="section-title">Carry the ritual<br><em>with you.</em></h2>
+    </div>
+    <p class="section-aside">Objects made to last — each one chosen because it earns a place on the table, in the bag, or on the shelf. AMRITVEDA Saamaan: the pantry, extended.</p>
+  </div>
+
+  <div class="saamaan-grid">
+
+    <!-- Stanley Cup -->
+    <div class="saamaan-item si-stanley reveal">
+      <div class="saamaan-vis">
+        <div class="saamaan-vis-inner">
+          <video width="100%" height="100%" autoplay muted loop style="object-fit: cover; border-radius: 8px;">
+            <source src="./videos/stanley.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="saamaan-body">
+        <div class="saamaan-tag">Obj. 01 · Drinkware</div>
+        <div class="saamaan-name">The Stanley<br><em>Quencher.</em></div>
+        <div class="saamaan-note">The one that started a movement — vacuum insulated, 30 oz. Keeps your afternoon kahwa cold, your morning chai warm. In our muted earth tones, naturally.</div>
+        <div class="saamaan-foot">
+          <span class="saamaan-variants">30 oz · 40 oz</span>
+          <span class="saamaan-cta">Enquire →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insulated Tumbler -->
+    <div class="saamaan-item si-tumbler reveal">
+      <div class="saamaan-vis">
+        <div class="saamaan-vis-inner">
+          <video width="100%" height="100%" autoplay muted loop style="object-fit: cover; border-radius: 8px;">
+            <source src="./videos/insulatedtumbler.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="saamaan-body">
+        <div class="saamaan-tag">Obj. 02 · Drinkware</div>
+        <div class="saamaan-name">Insulated<br><em>Tumbler.</em></div>
+        <div class="saamaan-note">Double-wall stainless, condensation-free. The desk companion for those who drink slowly and think deeply. Fits every cupholder, every ritual.</div>
+        <div class="saamaan-foot">
+          <span class="saamaan-variants">12 oz · 20 oz</span>
+          <span class="saamaan-cta">Enquire →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Travel Mug -->
+    <div class="saamaan-item si-mug reveal">
+      <div class="saamaan-vis">
+        <div class="saamaan-vis-inner">
+          <video width="100%" height="100%" autoplay muted loop style="object-fit: cover; border-radius: 8px;">
+            <source src="./videos/coffeemugs.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="saamaan-body">
+        <div class="saamaan-tag">Obj. 03 · Drinkware</div>
+        <div class="saamaan-name">Travel Coffee<br><em>Mug.</em></div>
+        <div class="saamaan-note">Sealed lid, spill-proof, six-hour heat retention. For the commute, the flight, the early morning that nobody else is awake for. Your ghee coffee, wherever.</div>
+        <div class="saamaan-foot">
+          <span class="saamaan-variants">350ml · 450ml</span>
+          <span class="saamaan-cta">Enquire →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artisanal Candles -->
+    <div class="saamaan-item si-candle reveal">
+      <div class="saamaan-vis">
+        <div class="saamaan-vis-inner">
+          <video width="100%" height="100%" autoplay muted loop style="object-fit: cover; border-radius: 8px;">
+            <source src="./videos/handmadecandles.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="saamaan-body">
+        <div class="saamaan-tag">Obj. 04 · Home</div>
+        <div class="saamaan-name">Hand Made<br><em>Candles.</em></div>
+        <div class="saamaan-note">Slow-poured soy wax, cotton wicks, fragrance drawn from the pantry itself — saffron &amp; cardamom, dry fig &amp; oud, walnut &amp; smoke. Sixty hours of quiet.</div>
+        <div class="saamaan-foot">
+          <span class="saamaan-variants">Three scents</span>
+          <span class="saamaan-cta">Enquire →</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- testimonials -->
+<section class="testimonials" id="story">
+  <div class="testimonials-head reveal">
+    <div class="testimonials-head-left">
+      <div class="eyebrow">From the pantry shelf to yours</div>
+      <h2 class="testimonials-title">What our people<br><em>are saying.</em></h2>
+    </div>
+    <div class="testimonials-meta">7 verified reviews · 5.0 ★ avg</div>
+  </div>
+
+  <div class="review-track" id="track-reviews">
+
+    <div class="review-card">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <div class="review-title">Perfect for Daily Cooking!</div>
+      <div class="review-body">"I do a lot of day-to-day cooking and I'm always looking for ways to make meals healthier. These nuts and seeds have become an absolute staple in my kitchen. I toss the seeds into my breakfast bowls and use the nuts in my evening stir-fries. They add the perfect crunch and texture. Highly recommend if you love clean, healthy cooking!"</div>
+      <div class="review-foot">
+        <div class="review-avatar">R</div>
+        <div>
+          <div class="review-name">Raghav Goel</div>
+        </div>
+        <span class="review-badge">✓ Verified</span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <div class="review-title">Genuinely Natural & Clean</div>
+      <div class="review-body">"I'm super picky about what I snack on. I absolutely hate those heavily processed, artificial nuts you find in regular stores loaded with preservatives. I wanted pure, natural food, and these nailed it. They make for the perfect healthy midday snack. Just pure goodness without any junk."</div>
+      <div class="review-foot">
+        <div class="review-avatar">Y</div>
+        <div>
+          <div class="review-name">Yash Verma</div>
+        </div>
+        <span class="review-badge">✓ Verified</span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <div class="review-title">Amazing for Homemade Sweets!</div>
+      <div class="review-body">"I have a massive sweet tooth and love making traditional sweets at home. I used these nuts to make a batch of laddoos and kheer last week, and the flavor profile was incredible. They rich up the sweets beautifully. If you love dessert-making, definitely go for these."</div>
+      <div class="review-foot">
+        <div class="review-avatar">R</div>
+        <div>
+          <div class="review-name">Rameshwar Prabhu Singh</div>
+        </div>
+        <span class="review-badge">✓ Verified</span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <div class="review-title">Great Quality Seeds for Plant-Based Diets</div>
+      <div class="review-body">"I recently converted to a vegetarian lifestyle and am trying to stick purely to natural, whole products. Right now, I'm relying fully on seeds for my daily nutrient rotation. Finding a brand that delivers clean, unadulterated seeds is tough, but these are excellent. Clean, fresh, and perfect for my daily diet."</div>
+      <div class="review-foot">
+        <div class="review-avatar">A</div>
+        <div>
+          <div class="review-name">Abhigyan</div>
+        </div>
+        <span class="review-badge">✓ Verified</span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <div class="review-title">The Absolute Best Festive Gift!</div>
+      <div class="review-body">"I love gifting unique things to family and friends during festivals. I put together hampers with these nuts and seeds for Holi, Diwali, and Rakshabandhan — the feedback was amazing. Every single person appreciated them! My relatives specifically pointed out that unlike regular store-bought nuts which feel super dry, these have a really good, rich natural oil content."</div>
+      <div class="review-foot">
+        <div class="review-avatar">A</div>
+        <div>
+          <div class="review-name">Amit Singh</div>
+        </div>
+        <span class="review-badge">✓ Verified</span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <div class="review-title">Highly Recommended</div>
+      <div class="review-body">"Premium quality and excellent packaging. You can easily tell the difference between these and cheaper options in the market. Will buy again."</div>
+      <div class="review-foot">
+        <div class="review-avatar">K</div>
+        <div>
+          <div class="review-name">Kapil Azad</div>
+        </div>
+        <span class="review-badge">✓ Verified</span>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <div class="review-title">10/10 Freshness</div>
+      <div class="review-body">"Super fresh products and fast delivery. Exactly what I was looking for. Totally worth the price!"</div>
+      <div class="review-foot">
+        <div class="review-avatar">H</div>
+        <div>
+          <div class="review-name">Harsh Verdhan</div>
+        </div>
+        <span class="review-badge">✓ Verified</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cat-nav" style="padding: 20px 36px 0;">
+    <button class="cat-nav-btn" onclick="scrollTrack('track-reviews',-1)">←</button>
+    <button class="cat-nav-btn" onclick="scrollTrack('track-reviews', 1)">→</button>
+  </div>
+</section>
+
+<!-- footer -->
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="foot-brand">AMRITVEDA<em>.</em></div>
+      <p class="foot-text">An earnest pantry of dry fruits, seeds and slow-stirred ghee. Sourced direct, dispatched fresh, packed by hand from our small store-room in Delhi.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Catalogue</h4>
+      <ul>
+        <li><a href="#catalogue">All Mewa</a></li>
+        <li><a href="#catalogue">Seeds</a></li>
+        <li><a href="#ghee">Desi Ghee</a></li>
+        <li><a href="#kits">Gifting</a></li>
+        <li><a href="#saamaan">Saamaan</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>The House</h4>
+      <ul>
+        <li><a href="#story">Story</a></li>
+        <li><a href="#">Sourcing</a></li>
+        <li><a href="#">Stockists</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Wholesale</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Reach us</h4>
+      <ul>
+        <li><a href="mailto:pureamritveda@gmail.com">pureamritveda@gmail.com</a></li>
+        <li><a href="tel:+918278502650">+91 82785 02650</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Letters / blog</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>AMRITVEDA</span>
+    <span>Pressed in India · Printed in good faith</span>
+  </div>
+</footer>
+
+<!-- Product Modals -->
+<div id="modal-almonds" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/almondsproduct.png" alt="Almonds">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/almonds.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/almondsusage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-almonds')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 001 · Premium Nuts · Kashmir</div>
+        <h2 class="modal-title">Almonds<br><em style="font-style: italic; color: var(--saffron);">— Mamra.</em></h2>
+        <p class="modal-desc">Smaller, oilier, irregular — sun-dried on terraces in Pulwama, never bleached. Rich in vitamin E and antioxidants.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Sizes</div>
+          <div class="detail-value">250g · 500g · 1kg</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Pulwama, Kashmir</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Shelf Life</div>
+          <div class="detail-value">12 months (refrigerated)</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Processing</div>
+          <div class="detail-value">Sun-dried, never bleached</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-almonds')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Almonds')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-chia" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/chiaproduct.png" alt="Chia">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/chia-seeds.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/chiaseedusage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-chia')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 009 · Healthy Seeds · Mexico</div>
+        <h2 class="modal-title">Chia<br><em style="font-style: italic; color: var(--saffron);">seed.</em></h2>
+        <p class="modal-desc">Small, mottled, mighty. Omega-3 rich seeds that absorb liquid and expand, perfect for puddings and smoothie bowls.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Size</div>
+          <div class="detail-value">200g</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Mexico</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Key Benefits</div>
+          <div class="detail-value">Omega-3, Fiber, Protein</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Storage</div>
+          <div class="detail-value">Cool, dry place · 18 months</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-chia')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Chia Seeds')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-kishmish" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/rasinsproduct.png" alt="Kishmish">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/raisins.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/kishmishusage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-kishmish')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 002 · Premium Nuts · Nashik</div>
+        <h2 class="modal-title">Kishmish<br><em style="font-style: italic; color: var(--saffron);">raisins.</em></h2>
+        <p class="modal-desc">Long, amber, sun-cured. From Thompson seedless vines. Natural sweetness with no added sugar.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Sizes</div>
+          <div class="detail-value">500g · 1kg</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Nashik, India</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Variety</div>
+          <div class="detail-value">Thompson Seedless</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Shelf Life</div>
+          <div class="detail-value">12 months (refrigerated)</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-kishmish')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Kishmish Raisins')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-anjeer" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/anjeerproduct.png" alt="Anjeer">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/anjeer-dried-figs.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/anjeerusage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-anjeer')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 003 · Premium Nuts · Afghan</div>
+        <h2 class="modal-title">Anjeer<br><em style="font-style: italic; color: var(--saffron);">(figs.)</em></h2>
+        <p class="modal-desc">Pale ivory outside, jammy inside. Hand-flattened, never sulphured. Rich in fiber and minerals.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Sizes</div>
+          <div class="detail-value">250g · 500g</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Afghanistan</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Processing</div>
+          <div class="detail-value">Hand-flattened, never sulphured</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Shelf Life</div>
+          <div class="detail-value">12 months (refrigerated)</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-anjeer')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Anjeer Figs')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-makhana" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/makhannaproduct.png" alt="Makhana">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/makhana-fox-nuts.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/makhanausage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-makhana')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 004 · Premium Nuts · Mithila</div>
+        <h2 class="modal-title">Makhana<br><em style="font-style: italic; color: var(--saffron);">fox-nuts.</em></h2>
+        <p class="modal-desc">Popped lotus seeds from the ponds of Bihar. Roasted in small batches. Light, crispy, and nutritious.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Sizes</div>
+          <div class="detail-value">100g · 250g</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Bihar, India</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Processing</div>
+          <div class="detail-value">Small batch roasted</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Storage</div>
+          <div class="detail-value">Airtight container · 6 months</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-makhana')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Makhana Fox-Nuts')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-munakka" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/munakkaproduct.png" alt="Munakka">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/munaka.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/munakausage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-munakka')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 005 · Premium Nuts · Himachal</div>
+        <h2 class="modal-title">Munakka<br><em style="font-style: italic; color: var(--saffron);">with seed.</em></h2>
+        <p class="modal-desc">The bigger, blacker, slower-dried cousin of the raisin. Rich in iron and antioxidants.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Sizes</div>
+          <div class="detail-value">250g · 500g</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Himachal Pradesh, India</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Key Benefits</div>
+          <div class="detail-value">Iron, Antioxidants, Energy</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Shelf Life</div>
+          <div class="detail-value">12 months (refrigerated)</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-munakka')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Munakka')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-walnuts" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/walnutsproduct.png" alt="Walnuts">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/walnuts.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/walnutsusage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-walnuts')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 006 · Premium Nuts · Kashmir</div>
+        <h2 class="modal-title">Walnuts<br><em style="font-style: italic; color: var(--saffron);">halved.</em></h2>
+        <p class="modal-desc">Light-skinned akhrot from Anantnag. Pale, not bitter; cold-stored. Rich in omega-3 fatty acids.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Sizes</div>
+          <div class="detail-value">250g · 500g</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Kashmir, India</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Key Benefits</div>
+          <div class="detail-value">Omega-3, Brain Health</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Storage</div>
+          <div class="detail-value">Cold storage · 12 months</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-walnuts')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Walnuts')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-pista" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/pistachiosproduct.png" alt="Pista">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/pistachios-pista.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/pistausage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-pista')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 007 · Premium Nuts · Iran (Salted)</div>
+        <h2 class="modal-title">Pista<br><em style="font-style: italic; color: var(--saffron);">roasted.</em></h2>
+        <p class="modal-desc">Grass-green, splits its own shell. Roasted with rock-salt, never oiled. Pure, natural flavor.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Sizes</div>
+          <div class="detail-value">250g · 500g · 1kg</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Iran</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Preparation</div>
+          <div class="detail-value">Roasted with rock-salt, never oiled</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Shelf Life</div>
+          <div class="detail-value">12 months (refrigerated)</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-pista')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Pista Roasted')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-cashews" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/cashewsproduct.png" alt="Cashews">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/cashew-nuts.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/cashewusage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-cashews')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 008 · Premium Nuts · Konkan (W240)</div>
+        <h2 class="modal-title">Cashews<br><em style="font-style: italic; color: var(--saffron);">— W240.</em></h2>
+        <p class="modal-desc">Whole, ivory, unbroken. Steam-cooked from the orchards of Vengurla. Premium grade, perfect for gifting.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Sizes</div>
+          <div class="detail-value">250g · 500g · 1kg</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Konkan, India (Vengurla)</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Grade</div>
+          <div class="detail-value">Premium W240 (whole kernels)</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Shelf Life</div>
+          <div class="detail-value">12 months (refrigerated)</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-cashews')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Cashews W240')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-pumpkin" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/pumpkinproduct.png" alt="Pumpkin">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/pumpkin-seeds.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/pumpkinseedsusage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-pumpkin')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 010 · Healthy Seeds · Austrian</div>
+        <h2 class="modal-title">Pumpkin<br><em style="font-style: italic; color: var(--saffron);">seed.</em></h2>
+        <p class="modal-desc">Hulled, dark-green, faintly nutty. Rich in magnesium, zinc, and antioxidants. Perfect for snacking or cooking.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Size</div>
+          <div class="detail-value">200g</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Austria</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Key Benefits</div>
+          <div class="detail-value">Magnesium, Zinc, Antioxidants</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Storage</div>
+          <div class="detail-value">Cool, dry place · 18 months</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-pumpkin')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Pumpkin Seeds')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-sunflower" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/sunflowerproduct.png" alt="Sunflower">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/sunflower-seeds.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/sunflowerseedusage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-sunflower')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 011 · Healthy Seeds · Karnataka</div>
+        <h2 class="modal-title">Sunflower<br><em style="font-style: italic; color: var(--saffron);">seed.</em></h2>
+        <p class="modal-desc">Hulled kernels, lightly roasted. Vitamin E rich, great for heart health. Perfect snack or salad topper.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Size</div>
+          <div class="detail-value">200g</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Karnataka, India</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Key Benefits</div>
+          <div class="detail-value">Vitamin E, Heart Health</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Preparation</div>
+          <div class="detail-value">Hulled kernels, lightly roasted</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-sunflower')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Sunflower Seeds')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-flax" class="product-modal">
+  <div class="modal-content">
+    <div class="modal-carousel">
+      <div class="carousel-slide active">
+        <img src="images/product/flaxproduct.png" alt="Flax">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/flax-seeds.png" alt="Nutrition">
+      </div>
+      <div class="carousel-slide">
+        <img src="images/usage/flaxseedusage.png" alt="Usage">
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-btn" onclick="carouselNav(event, -1)">‹</button>
+        <button class="carousel-btn" onclick="carouselNav(event, 1)">›</button>
+      </div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal('modal-flax')">✕</button>
+      <div class="modal-header">
+        <div class="modal-meta">Obj. 012 · Healthy Seeds · Madhya Pradesh</div>
+        <h2 class="modal-title">Flax<br><em style="font-style: italic; color: var(--saffron);">(alsi).</em></h2>
+        <p class="modal-desc">Golden, oily, cold-pressed-ready. Rich in lignans and omega-3s. Great for digestive health.</p>
+      </div>
+      <div class="modal-carousel-nav">
+        <span class="carousel-dot active" onclick="goToSlide(event, 0)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 1)"></span>
+        <span class="carousel-dot" onclick="goToSlide(event, 2)"></span>
+      </div>
+      <div class="modal-details">
+        <div class="detail-item">
+          <div class="detail-label">Available Size</div>
+          <div class="detail-value">200g</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Origin</div>
+          <div class="detail-value">Madhya Pradesh, India</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Key Benefits</div>
+          <div class="detail-value">Omega-3, Lignans, Fiber</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Storage</div>
+          <div class="detail-value">Cool, dry place · 18 months</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeModal('modal-flax')">Close</button>
+        <button class="modal-btn" onclick="enquireNow('Flax Seeds')">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // ---------- product modal functions ----------
+  function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  function carouselNav(e, direction) {
+    const carousel = e.target.closest('.modal-carousel');
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const dots = carousel.parentElement.querySelector('.modal-carousel-nav')?.querySelectorAll('.carousel-dot') || [];
+    const currentSlide = Array.from(slides).findIndex(s => s.classList.contains('active'));
+    const nextSlide = (currentSlide + direction + slides.length) % slides.length;
+    
+    slides.forEach(s => s.classList.remove('active'));
+    slides[nextSlide].classList.add('active');
+    
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === nextSlide);
+    });
+  }
+
+  function goToSlide(e, slideIndex) {
+    const dots = e.target.parentElement.querySelectorAll('.carousel-dot');
+    const carousel = e.target.closest('.modal-info').previousElementSibling;
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    
+    slides.forEach(s => s.classList.remove('active'));
+    slides[slideIndex].classList.add('active');
+    
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === slideIndex);
+    });
+  }
+
+  function enquireNow(productName) {
+    const phone = '+91 82785 02650';
+    const message = `Hi! I'm interested in ${productName}. Can you provide more details?`;
+    const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  }
+
+  // Close modal on outside click
+  document.querySelectorAll('.product-modal').forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal(modal.id);
+    });
+  });
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.product-modal.active').forEach(m => closeModal(m.id));
+    }
+  });
+
+  // Make cards clickable
+  document.addEventListener('DOMContentLoaded', () => {
+    // Premium Nuts
+    const cards = [
+      { selector: '.sc-nut:nth-child(1)', modal: 'modal-almonds' },
+      { selector: '.sc-nut:nth-child(2)', modal: 'modal-kishmish' },
+      { selector: '.sc-nut:nth-child(3)', modal: 'modal-anjeer' },
+      { selector: '.sc-nut:nth-child(4)', modal: 'modal-makhana' },
+      { selector: '.sc-nut:nth-child(5)', modal: 'modal-munakka' },
+      { selector: '.sc-nut:nth-child(6)', modal: 'modal-walnuts' },
+      { selector: '.sc-nut:nth-child(7)', modal: 'modal-pista' },
+      { selector: '.sc-nut:nth-child(8)', modal: 'modal-cashews' },
+      // Healthy Seeds
+      { selector: '.sc-chia', modal: 'modal-chia' },
+      { selector: '.sc-pumpkin', modal: 'modal-pumpkin' },
+      { selector: '.sc-sunflower', modal: 'modal-sunflower' },
+      { selector: '.sc-flax', modal: 'modal-flax' }
+    ];
+
+    cards.forEach(({ selector, modal }) => {
+      const card = document.querySelector(selector);
+      if (card) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => openModal(modal));
+      }
+    });
+  });
+
+  // ---------- scroll track helper ----------
+
+  function scrollTrack(id, dir) {
+    const el = document.getElementById(id);
+    const amt = id === 'track-reviews' ? 380 : 290;
+    el.scrollBy({ left: dir * amt, behavior: 'smooth' });
+  }
+
+  // drag-to-scroll on tracks
+  document.querySelectorAll('.card-track, .review-track').forEach(track => {
+    let isDown = false, startX, scrollLeft;
+    track.addEventListener('mousedown', e => {
+      isDown = true; track.classList.add('dragging');
+      startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft;
+    });
+    track.addEventListener('mouseleave', () => { isDown = false; track.classList.remove('dragging'); });
+    track.addEventListener('mouseup', () => { isDown = false; track.classList.remove('dragging'); });
+    track.addEventListener('mousemove', e => {
+      if (!isDown) return; e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      track.scrollLeft = scrollLeft - (x - startX) * 1.5;
+    });
+  });
+
+  // ---------- hero banner ----------
+  const slides = document.querySelectorAll('.banner-slide');
+  const dots   = document.querySelectorAll('.b-dot');
+  const prog   = document.getElementById('bprog');
+  const count  = document.getElementById('scount');
+  const DELAY  = 5000;
+  let cur = 0, timer, startT, rafId;
+
+  function padTwo(n){ return String(n).padStart(2,'0'); }
+
+  function goTo(n){
+    slides[cur].classList.remove('active');
+    slides[cur].classList.add('exit');
+    dots[cur].classList.remove('on');
+    setTimeout(()=> slides[(cur === n ? cur : cur)].classList.remove('exit'), 900);
+    cur = n;
+    slides[cur].classList.add('active');
+    dots[cur].classList.add('on');
+    count.textContent = padTwo(cur+1) + ' — 05';
+  }
+
+  function next(){ goTo((cur+1) % slides.length); }
+
+  function startTimer(){
+    clearInterval(timer);
+    startT = performance.now();
+    prog.style.transition = 'none';
+    prog.style.width = '0%';
+    cancelAnimationFrame(rafId);
+    function tick(now){
+      let elapsed = now - startT;
+      let pct = Math.min((elapsed / DELAY) * 100, 100);
+      prog.style.transition = 'none';
+      prog.style.width = pct + '%';
+      if(pct < 100) rafId = requestAnimationFrame(tick);
+    }
+    rafId = requestAnimationFrame(tick);
+    timer = setInterval(()=>{ next(); startTimer(); }, DELAY);
+  }
+
+  dots.forEach(d => d.addEventListener('click', ()=>{
+    goTo(parseInt(d.dataset.i));
+    startTimer();
+  }));
+
+  startTimer();
+
+  // ---------- reveal on scroll ----------
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ---------- gift hamper cards: candlelight glow + hanging tag ----------
+  document.querySelectorAll('.sc-gift').forEach(card => {
+
+    // candlelight glow layer (position driven by --mx / --my)
+    const glow = document.createElement('div');
+    glow.className = 'sc-glow';
+    card.appendChild(glow);
+
+    // pull the "№ 0X" number to print on the hanging tag
+    const topNum = card.querySelector('.sc-top span:first-child');
+    const num = topNum ? topNum.textContent.replace(/[^\d]/g, '') : '';
+
+    // hanging gift-tag on a length of twine
+    const tag = document.createElement('div');
+    tag.className = 'gift-tag';
+    tag.innerHTML = `
+      <svg viewBox="0 0 46 54" width="100%" height="100%">
+        <path class="tag-twine" d="M23 0 C 23 4, 18 4, 18 8" />
+        <path class="tag-body"
+          d="M18 8 H40 a4 4 0 0 1 4 4 V40 a4 4 0 0 1 -4 4 H10
+             a4 4 0 0 1 -4 -4 V22 Z" />
+        <circle class="tag-hole" cx="23" cy="15" r="2.4" />
+        <text class="tag-num" x="23" y="31">${num}</text>
+      </svg>`;
+    card.appendChild(tag);
+
+    // gentle 3D tilt + glow position, following the cursor
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;   // 0..1
+      const py = (e.clientY - r.top) / r.height;   // 0..1
+      const rotateY = (px - 0.5) * 8;              // left/right tilt
+      const rotateX = (0.5 - py) * 8;              // up/down tilt
+      card.style.transform =
+        `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+      card.style.setProperty('--mx', (px * 100) + '%');
+      card.style.setProperty('--my', (py * 100) + '%');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+
+</script>
+
+</body>
+</html>
